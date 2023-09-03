@@ -2,6 +2,8 @@ import os
 
 from flask import Flask
 
+from saleshubapi.api.api_v1.api import api_bp
+
 
 def create_app(test_config=None):
     # create and configure the app
@@ -23,10 +25,7 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
-
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
+    
+    app.register_blueprint(api_bp, url_prefix="/api/v1")
 
     return app
