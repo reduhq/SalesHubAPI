@@ -2,7 +2,10 @@ import os
 
 from flask import Flask
 
-from saleshubapi.api.api_v1.api import api_bp
+# from saleshubapi.api.api_v1.api import api_bp
+from flask_smorest import Api
+
+from saleshubapi.api.api_v1.api import register_blueprints
 
 
 def create_app(test_config=None):
@@ -10,7 +13,13 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+        
+        API_TITLE = "SalesHubAPI",
+        API_VERSION = "v1",
+        OPENAPI_VERSION = "3.0.2",
+        OPENAPI_URL_PREFIX = "/",
+        OPENAPI_SWAGGER_UI_PATH = "/docs",
+        OPENAPI_SWAGGER_UI_URL = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
     )
 
     if test_config is None:
@@ -26,6 +35,7 @@ def create_app(test_config=None):
     except OSError:
         pass
     
-    app.register_blueprint(api_bp, url_prefix="/api/v1")
-
+    api = Api(app)
+    register_blueprints(api)
+    
     return app

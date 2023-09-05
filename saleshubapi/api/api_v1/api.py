@@ -1,5 +1,6 @@
-from flask import Blueprint
-from .endpoints import hello
+from flask_smorest import Blueprint
+from .endpoints import hello, advertisement
 
-api_bp = Blueprint("Blueprint", __name__)
-api_bp.register_blueprint(hello.bp, url_prefix="/hello")
+def register_blueprints(api):
+    api.register_blueprint(hello.bp, url_prefix="/api/v1/hello")
+    api.register_blueprint(advertisement.bp, url_prefix="/api/v1/post")
