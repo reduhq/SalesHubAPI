@@ -1,6 +1,7 @@
-from saleshubapi.db.session import AsyncSessionLocal
+from saleshubapi.db.session import SessionLocal
 
-async def get_async_db():
-    async with AsyncSessionLocal as db:
-        yield db
-        await db.commit()
+def get_connection():
+    try:
+        return SessionLocal()
+    except Exception as e:
+        print(e)

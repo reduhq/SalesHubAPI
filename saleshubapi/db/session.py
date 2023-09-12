@@ -1,12 +1,15 @@
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 
-SQLALCHEMY_DATABASE_URL_ASYNC = "postgresql+asyncpg://sa:12345678@db:5432/SalesHubDB"      
+SQLALCHEMY_DATABASE_URL_ASYNC = "postgresql+psycopg2://sa:12345678@db:5432/SalesHubDB"      
 
-async_engine = create_async_engine(
-    SQLALCHEMY_DATABASE_URL_ASYNC
+engine = create_engine(
+    SQLALCHEMY_DATABASE_URL_ASYNC,
+    pool_pre_ping = True
 )
 
-AsyncSessionLocal = sessionmaker(
-    async_engine, class_=AsyncSession, expire_on_commit=False
+SessionLocal = sessionmaker(
+    autocommit = False,
+    autoflush= False,
+    bind = engine
 )
